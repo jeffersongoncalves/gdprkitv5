@@ -1,17 +1,18 @@
 <div class="filament-hidden">
 
-![FilaKit](https://raw.githubusercontent.com/jeffersongoncalves/filakitv5/main/art/jeffersongoncalves-filakitv5.png)
+![GdprKit](https://raw.githubusercontent.com/jeffersongoncalves/gdprkitv5/main/art/jeffersongoncalves-gdprkitv5.png)
 
 </div>
 
-# FilaKit Start Kit Filament 5.x and Laravel 13.x
+# GdprKit Start Kit Filament 5.x and Laravel 13.x
 
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/jeffersongoncalves)
 
-## About FilaKit
+## About GdprKit
 
-FilaKit is a robust starter kit built on Laravel 13.x and Filament 5.x, designed to accelerate the development of modern
-web applications with a ready-to-use multi-panel structure.
+GdprKit is a robust starter kit built on Laravel 13.x and Filament 5.x, designed to accelerate the development of modern
+web applications with a ready-to-use multi-panel structure and the GDPR privacy suite already installed: the tooling for
+the EU General Data Protection Regulation (GDPR), managed from the Admin panel.
 
 ## Features
 
@@ -21,7 +22,8 @@ web applications with a ready-to-use multi-panel structure.
     - Admin Panel (`/admin`) - For system administrators
     - App Panel (`/app`) - For authenticated application users
     - Public Panel (frontend interface) - For visitors
-- **Environment Configuration** - Centralized configuration through the `config/filakit.php` file
+- **GDPR privacy suite** - every `laravel-gdpr*` package and its `filament-gdpr*` plugin (3.x), wired into the Admin panel
+- **Environment Configuration** - Centralized configuration through the `config/gdprkit.php` file
 
 ## System Requirements
 
@@ -33,7 +35,7 @@ web applications with a ready-to-use multi-panel structure.
 
 Clone the repository
 ``` bash
-laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
+laravel new my-app --using=jeffersongoncalves/gdprkitv5 --database=mysql
 ```
 
 ### Using FilaKit CLI
@@ -41,14 +43,14 @@ laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
 Or use [FilaKit CLI](https://github.com/jeffersongoncalves/filakit-cli) for a simplified setup:
 
 ```bash
-filakit new my-app --kit=jeffersongoncalves/filakitv5
+filakit new my-app --kit=jeffersongoncalves/gdprkitv5
 ```
 
 > Install FilaKit CLI: `composer global require jeffersongoncalves/filakit-cli`
 
 ###  Easy Installation
 
-FilaKit can be easily installed using the following command:
+GdprKit can be easily installed using the following command:
 
 ```bash
 php install.php
@@ -99,7 +101,7 @@ php artisan serve
 
 Clone the repository
 ```bash
-laravel new my-app --using=jeffersongoncalves/filakitv5 --database=mysql
+laravel new my-app --using=jeffersongoncalves/gdprkitv5 --database=mysql
 ```
 
 Move into the project directory
@@ -154,9 +156,35 @@ Install JavaScript dependencies
 pnpm install
 ```
 
+## GDPR privacy suite
+
+The kit ships the whole GDPR suite for the EU General Data Protection Regulation (GDPR):
+
+| Package | Filament plugin |
+|---|---|
+| [laravel-gdpr](https://github.com/jeffersongoncalves/laravel-gdpr) | [filament-gdpr](https://github.com/jeffersongoncalves/filament-gdpr) |
+| [laravel-gdpr-consent](https://github.com/jeffersongoncalves/laravel-gdpr-consent) | [filament-gdpr-consent](https://github.com/jeffersongoncalves/filament-gdpr-consent) |
+| [laravel-gdpr-dsar](https://github.com/jeffersongoncalves/laravel-gdpr-dsar) | [filament-gdpr-dsar](https://github.com/jeffersongoncalves/filament-gdpr-dsar) |
+| [laravel-gdpr-retention](https://github.com/jeffersongoncalves/laravel-gdpr-retention) | [filament-gdpr-retention](https://github.com/jeffersongoncalves/filament-gdpr-retention) |
+| [laravel-gdpr-audit-log](https://github.com/jeffersongoncalves/laravel-gdpr-audit-log) | [filament-gdpr-audit-log](https://github.com/jeffersongoncalves/filament-gdpr-audit-log) |
+| [laravel-gdpr-breaches](https://github.com/jeffersongoncalves/laravel-gdpr-breaches) | [filament-gdpr-breaches](https://github.com/jeffersongoncalves/filament-gdpr-breaches) |
+| [laravel-gdpr-records](https://github.com/jeffersongoncalves/laravel-gdpr-records) | [filament-gdpr-records](https://github.com/jeffersongoncalves/filament-gdpr-records) |
+| [laravel-gdpr-vendors](https://github.com/jeffersongoncalves/laravel-gdpr-vendors) | [filament-gdpr-vendors](https://github.com/jeffersongoncalves/filament-gdpr-vendors) |
+| [laravel-gdpr-dpia](https://github.com/jeffersongoncalves/laravel-gdpr-dpia) | [filament-gdpr-dpia](https://github.com/jeffersongoncalves/filament-gdpr-dpia) |
+| [laravel-gdpr-children](https://github.com/jeffersongoncalves/laravel-gdpr-children) | [filament-gdpr-children](https://github.com/jeffersongoncalves/filament-gdpr-children) |
+
+- `App\Models\User` is the data subject: it implements `HasPersonalData` and declares its `name` and `email` with `#[PersonalData]`.
+  Declare every personal column you add, on this model and on your own models, and list those models in `config/gdpr.php`.
+- The migrations are already in `database/migrations`: `php artisan migrate` creates every table of the suite.
+- Every plugin is registered in `app/Providers/Filament/AdminPanelProvider.php`, under the **GDPR** navigation group.
+- `tests/Feature/GdprSuiteTest.php` checks the declarations and opens every page of the suite.
+
+Each package's README explains its configuration, events and scheduled commands. The suite gives you tooling: it does not make
+you compliant on its own, you still need legal review.
+
 ## Authentication Structure
 
-FilaKit comes pre-configured with a custom authentication system that supports different types of users:
+GdprKit comes pre-configured with a custom authentication system that supports different types of users:
 
 - `Admin` - For administrative panel access
 - `User` - For application panel access
@@ -183,16 +211,16 @@ Panels can be customized through their respective providers:
 - `app/Providers/Filament/AppPanelProvider.php`
 - `app/Providers/Filament/PublicPanelProvider.php`
 
-Alternatively, these settings are also consolidated in the `config/filakit.php` file for easier management.
+Alternatively, these settings are also consolidated in the `config/gdprkit.php` file for easier management.
 
 ### Themes and Colors
 
 Each panel can have its own color scheme, which can be easily modified in the corresponding Provider files or in the
-`filakit.php` configuration file.
+`gdprkit.php` configuration file.
 
 ### Configuration File
 
-The `config/filakit.php` file centralizes the configuration of the starter kit, including:
+The `config/gdprkit.php` file centralizes the configuration of the starter kit, including:
 
 - Panel routes
 - Middleware for each panel
@@ -286,7 +314,7 @@ Reference
 
 ## Resources
 
-FilaKit includes support for:
+GdprKit includes support for:
 
 - User and admin management
 - Multi-guard authentication system

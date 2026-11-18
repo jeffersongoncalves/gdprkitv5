@@ -25,6 +25,16 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use JeffersonGoncalves\Filament\Admin\AdminPlugin;
 use JeffersonGoncalves\Filament\Admin\Pages\Auth\Login;
+use JeffersonGoncalves\Filament\Gdpr\GdprPlugin;
+use JeffersonGoncalves\Filament\GdprAuditLog\GdprAuditLogPlugin;
+use JeffersonGoncalves\Filament\GdprBreaches\GdprBreachesPlugin;
+use JeffersonGoncalves\Filament\GdprChildren\GdprChildrenPlugin;
+use JeffersonGoncalves\Filament\GdprConsent\GdprConsentPlugin;
+use JeffersonGoncalves\Filament\GdprDpia\GdprDpiaPlugin;
+use JeffersonGoncalves\Filament\GdprDsar\GdprDsarPlugin;
+use JeffersonGoncalves\Filament\GdprRecords\GdprRecordsPlugin;
+use JeffersonGoncalves\Filament\GdprRetention\GdprRetentionPlugin;
+use JeffersonGoncalves\Filament\GdprVendors\GdprVendorsPlugin;
 use JeffersonGoncalves\Filament\Pwa\FilamentPwaPlugin;
 use JeffersonGoncalves\Filament\SecurityHeaders\SecurityHeadersPlugin;
 use JeffersonGoncalves\Filament\User\UserPlugin;
@@ -45,10 +55,10 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->brandLogo(fn () => Vite::asset(config('filakit.logo')))
+            ->brandLogo(fn () => Vite::asset(config('gdprkit.logo')))
             ->brandLogoHeight(fn () => request()->is('admin/login', 'admin/password-reset/*') ? '121px' : '50px')
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->defaultThemeMode(config('filakit.theme_mode', ThemeMode::Dark))
+            ->defaultThemeMode(config('gdprkit.theme_mode', ThemeMode::Dark))
             ->discoverClusters(in: app_path('Filament/Admin/Clusters'), for: 'App\\Filament\\Admin\\Clusters')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
@@ -78,12 +88,33 @@ class AdminPanelProvider extends PanelProvider
             ->navigationGroups([
                 __('User'),
                 __('Management'),
+                __('GDPR'),
                 __('Settings'),
             ])
             ->plugins([
                 SecurityHeadersPlugin::make()
                     ->navigationGroup(fn (): string => __('Settings')),
                 AdminPlugin::make(),
+                GdprPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprConsentPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprDsarPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprRetentionPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprAuditLogPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprBreachesPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprRecordsPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprVendorsPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprDpiaPlugin::make()
+                    ->navigationGroup('GDPR'),
+                GdprChildrenPlugin::make()
+                    ->navigationGroup('GDPR'),
                 UserPlugin::make(),
                 FilamentPwaPlugin::make(),
                 FilamentDeveloperLoginsPlugin::make()
